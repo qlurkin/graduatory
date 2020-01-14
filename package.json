@@ -1,0 +1,11 @@
+{
+  "name": "graduatory",
+  "version": "1.0.0",
+  "description": "Manage student's grades",
+  "main": "graduatory.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "qlurkin@gmail.com",
+  "license": "MIT"
+}
