@@ -2,6 +2,7 @@
   "name": "graduatory",
   "version": "1.0.0",
   "description": "Manage student's grades",
+  "repository": "https://github.com/qlurkin/graduatory.git",
   "main": "graduatory.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
