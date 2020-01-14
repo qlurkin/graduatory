@@ -9,6 +9,9 @@
   "author": "qlurkin@gmail.com",
   "license": "MIT",
   "dependencies": {
-    "nedb": "^1.8.0"
+    "nedb-promises": "^4.0.1"
+  },
+  "bin": {
+    "graduatory": "./graduatoryREPL.js"
   }
 }
