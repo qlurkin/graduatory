@@ -5,27 +5,48 @@ const repl = require('repl')
 
 const writer = repl.writer
 
-let promiseCounter = 0
+let valueCounter = 0
+
+const values = []
 
 const coloredWithBracket = value => `\u001b[36m[${value}]\u001b[0m`
 
 const myWriter = (output) => {
+    values[valueCounter] = output
     if(output && output.then && typeof output.then === 'function') {
-        promiseCounter++
         ((count, promise) => {
             const print = (msg) => console.log(`${coloredWithBracket(count)}`, msg)
-            promise.then((data) => {if(data) print(data)}, err => {
+            promise.then((data) => {
+                values[count] = data
+                print(data)
+            }, err => {
+                values[count] = err
                 if(err.message) print(err.message)
                 else print(err)
             })
-        })(promiseCounter, output)
-        return `Promise ${coloredWithBracket(promiseCounter)}`
+        })(valueCounter, output)
     }
-    
+
     writer.options.colors = true
-    return writer(output)
+    output = writer(output)
+    output = `${coloredWithBracket(valueCounter)} ${output}`
+    valueCounter++
+    return output
 }
 
 const r = repl.start({prompt: 'graduatory> ', writer: myWriter})
-r.context.graduatory = graduatory
-r.context.gr = graduatory
+Object.defineProperty(r.context, 'grades', {
+    configurable: false,
+    enumerable: true,
+    value: graduatory.grades
+})
+Object.defineProperty(r.context, 'students', {
+    configurable: false,
+    enumerable: true,
+    value: graduatory.students
+})
+Object.defineProperty(r.context, '$', {
+    configurable: false,
+    enumerable: true,
+    value: values
+})
