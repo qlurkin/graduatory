@@ -10,7 +10,8 @@
   "author": "qlurkin@gmail.com",
   "license": "MIT",
   "dependencies": {
-    "nedb-promises": "^4.0.1"
+    "nedb-promises": "^4.0.1",
+    "table": "^5.4.6"
   },
   "bin": {
     "graduatory": "./graduatoryREPL.js"

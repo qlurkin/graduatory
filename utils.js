@@ -17,3 +17,28 @@ exports.find = (query, list) => list.filter(elem => exports.match(query, elem))
 
 exports.findOne = (query, list) => exports.find(query, list)[0]
 
+exports.isObject = (thing) => !Array.isArray(thing) && typeof thing === 'object'
+
+exports.isArray = (thing) => Array.isArray(thing)
+
+exports.validateSession = (session) => {
+    const currentYear = new Date().getFullYear()
+    
+    if(session.length !== 7) throw new Error("wrong session format (MM-YYYY)")
+    const tokens = session.split('-')
+    if(tokens.length !== 2) throw new Error("wrong session format (MM-YYYY)")
+    try {
+        const month = parseInt(tokens[0], 10)
+        const year = parseInt(tokens[1], 10)
+        if(month < 1 || month > 12) throw new Error("invalid month")
+        if(year > currentYear || year < currentYear - 10) throw new Error("invalid year")
+    }
+    catch(err) {
+        throw new Error(`wrong session format (MM-YYYY): ${err.message}`)
+    }
+}
+
+exports.validateGradesList = gradesList => {
+    if(!Array.isArray(gradesList)) throw new Error("GradesList must be an Array")
+}
+
