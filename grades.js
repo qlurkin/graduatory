@@ -1,19 +1,38 @@
 const NeDB = require('nedb-promises')
 const path = require('path')
 const dbPath = require('./db-path')
-const { readFile, validateSession, validateGradesList } = require('./utils')
+const { readFile, validateSession, validateGradesList, setGrade } = require('./utils')
 
 const grades = NeDB.create({ filename: path.join(dbPath, 'grades.db'), autoload: true })
 
-grades.add = (evaluation, session, gradesList, gradeMax=20) => {
+grades.create = (evaluation, session, gradesList=[], gradeMax=20) => {
     validateSession(session)
     validateGradesList(gradesList)
-    return grades.insert({
-        evaluation,
-        session,
-        grades: gradesList,
-        gradeMax,
-        insert: new Date().toJSON()
+    return grades.find({evaluation, session}).then(docs => {
+        if(docs.length > 0) {
+            throw new Error(`${evaluation} ${session} already exists`)
+        }
+        return grades.insert({
+            evaluation,
+            session,
+            grades: gradesList,
+            gradeMax,
+            insert: new Date().toJSON()
+        })
+    })
+}
+
+grades.updateGradesList = (evaluation, session, gradesList) => {
+    return grades.find({evaluation, session}).then(docs => {
+        if(docs.length === 0) {
+            throw new Error(`${evaluation} ${session} don't exists`)
+        }
+        const grade = docs[0]
+        gradesList.forEach(elem => {
+            setGrade(grade.grades, elem.matricule, elem.grade)
+        })
+
+        return grades.update({_id: grade._id}, grade)
     })
 }
 

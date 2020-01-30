@@ -88,7 +88,10 @@ r.eval = (cmd, context, filename, callback) => {
             callback(truc, value)
         })
         .catch(err => {
-            callback(truc, err)
+            if(err.message)
+                callback(truc, err.message)
+            else
+                callback(truc, err)
         })
     })
 }

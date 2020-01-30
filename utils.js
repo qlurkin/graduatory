@@ -42,3 +42,13 @@ exports.validateGradesList = gradesList => {
     if(!Array.isArray(gradesList)) throw new Error("GradesList must be an Array")
 }
 
+exports.setGrade = (gradeList, matricule, grade) => {
+    const found = gradeList.filter(grade => grade.matricule === matricule)
+    if(found.length > 0) {
+        found[0].grade = grade
+    }
+    else {
+        gradeList.push({matricule, grade})
+    }
+}
+
