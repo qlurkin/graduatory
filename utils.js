@@ -24,9 +24,9 @@ exports.isArray = (thing) => Array.isArray(thing)
 exports.validateSession = (session) => {
     const currentYear = new Date().getFullYear()
     
-    if(session.length !== 7) throw new Error("wrong session format (MM-YYYY)")
+    if(session.length !== 7) throw new Error(`wrong session format (MM-YYYY): ${session}`)
     const tokens = session.split('-')
-    if(tokens.length !== 2) throw new Error("wrong session format (MM-YYYY)")
+    if(tokens.length !== 2) throw new Error(`wrong session format (MM-YYYY): ${session}`)
     try {
         const month = parseInt(tokens[0], 10)
         const year = parseInt(tokens[1], 10)
@@ -34,7 +34,7 @@ exports.validateSession = (session) => {
         if(year > currentYear || year < currentYear - 10) throw new Error("invalid year")
     }
     catch(err) {
-        throw new Error(`wrong session format (MM-YYYY): ${err.message}`)
+        throw new Error(`wrong session format (MM-YYYY): ${session} (${err.message})`)
     }
 }
 

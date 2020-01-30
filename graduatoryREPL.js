@@ -4,6 +4,7 @@ const graduatory = require('./graduatory')
 const repl = require('repl')
 const {table} = require('table')
 const {isObject, isArray, validateSession} = require('./utils')
+const prompt = require('prompt')
 
 const writer = repl.writer
 writer.options.colors = true
@@ -14,7 +15,7 @@ const values = []
 
 const coloredWithBracket = value => `\u001b[36m[${value}]\u001b[0m`
 
-const isArrayOfObject = (thing) => isArray(thing) && thing.every(elem => isObject(elem))
+const isArrayOfObject = (thing) => isArray(thing) && thing.length > 0 && thing.every(elem => isObject(elem))
 
 const myWriter = (value) => {
     values[valueCounter] = value

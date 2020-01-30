@@ -23,15 +23,21 @@ students.addFromJSON = (path) =>
 
 students.show = matricule =>
     grades.find({'grades.matricule': matricule})
-    .then(docs => docs.map(doc => ({
-        evaluation: doc.evaluation,
-        session: doc.session,
-        gradeMax: doc.gradeMax,
-        grade: findOne({matricule}, doc.grades).grade
-    })))
-    .then(evaluations =>
-        students.findOne({matricule})
-        .then(student => Object.assign(student, {grades: evaluations}))
-    )
+    .then(docs => { 
+        const evaluations = docs.map(doc => ({
+            evaluation: doc.evaluation,
+            session: doc.session,
+            gradeMax: doc.gradeMax,
+            grade: findOne({matricule}, doc.grades).grade
+        }))
+
+        //console.log(evaluations)
+
+        return students.findOne({matricule})
+        .then(student => {
+            //console.log(student)
+            return Object.assign(student, {grades: evaluations})
+        })
+    })
 
 module.exports = students
