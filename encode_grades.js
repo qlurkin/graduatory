@@ -4,8 +4,14 @@ const grades = require('./grades')
 const students = require('./students')
 const prompt = require('prompt')
 const fs = require('fs')
-const table = require('table')
+const {table} = require('table')
 const {setGrade} = require('./utils')
+
+const options = {
+    drawHorizontalLine: (index, size) => {
+        return index === 0 || index === 1 || index === size
+    }
+}
 
 const show = (gradesList, names) => {
     const data = [['Matricule', 'Name', 'Grade']]
@@ -14,7 +20,7 @@ const show = (gradesList, names) => {
         data.push([grade.matricule, names[grade.matricule], grade.grade])
     }
 
-    console.log(table(data))
+    console.log(table(data, options))
 }
 
 const encode = (evaluation, session, gradeMax=20) => {
@@ -53,12 +59,12 @@ const encode = (evaluation, session, gradeMax=20) => {
             
             students.findOne({matricule: result.matricule}).then(student => {
                 if(student) {
-                    names[matricule] = `${student.firstname} ${student.lastname}`
+                    names[result.matricule] = `${student.firstname} ${student.lastname}`
                 }
                 else {
-                    names[matricule] = 'Unknown'
+                    names[result.matricule] = 'Unknown'
                 }
-                askGrade(result.matricule, `Grade for ${names[matricule]}`)
+                askGrade(result.matricule, `Grade for ${names[result.matricule]}`)
             })
         })
     }
@@ -78,8 +84,14 @@ if(process.argv.length > 4) {
         grades.create(evaluation, session, [], gradeMax)
     }
 
+    if(command !== 'create' && command !== 'update') {
+        console.log('Unknown command')
+        process.exit()
+    }
+
     encode(evaluation, session, gradeMax)
 }
 else {
-    console.log('encode_grades <evaluation> <session> [<gradeMax>]')
+    console.log('encode_grades <command> <evaluation> <session> [<gradeMax>]')
+    console.log('   <command> = create | update')
 }

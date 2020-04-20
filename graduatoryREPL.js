@@ -66,7 +66,7 @@ const tableWriter = (output, keys) => {
         keys = Object.keys(output[0])
     }
     
-    const data = output.map(obj => keys.map(key => isArray(obj[key]) ? 'Array' : obj[key]))
+    const data = output.map(obj => keys.map(key => isArray(obj[key]) ? `Array(${obj[key].length})` : obj[key]))
     data.unshift(keys)
     addIndex(data)
 

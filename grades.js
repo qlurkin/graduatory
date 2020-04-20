@@ -50,7 +50,7 @@ grades.addFromCSV = (evaluation, session, path, sep=';', gradeMax=20) =>
 
         return Promise.resolve(gradesList)
     })
-    .then(gradesList => grades.add(evaluation, session, gradesList, gradeMax))
+    .then(gradesList => grades.create(evaluation, session, gradesList, gradeMax))
 
 grades.addFromJSON = (evaluation, session, path, gradeMax=20) =>
     readFile(path)
@@ -58,6 +58,6 @@ grades.addFromJSON = (evaluation, session, path, gradeMax=20) =>
         data = JSON.parse(data)
         return data.students.map(student => ({matricule: student.matricule, grade: student.grade}))
     })
-    .then(gradesList => grades.add(evaluation, session, gradesList, gradeMax))
+    .then(gradesList => grades.create(evaluation, session, gradesList, gradeMax))
 
 module.exports = grades
