@@ -14,7 +14,7 @@
     "prompt": "^1.0.0",
     "table": "^5.4.6",
     "xlsjs": "^1.0.1",
-    "xlsx": "^0.15.5"
+    "xlsx": "^0.17.0"
   },
   "bin": {
     "graduatory": "./graduatoryREPL.js",
